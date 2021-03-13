@@ -37,61 +37,18 @@ public class AverageTemperature {
     }
 
 
-    /**
-     * Classe de MAP
-     * Formato geral: Mapper<Tipo da chave de entrada,
-     *                       Tipo da entrada,
-     *                       Tipo da chave de saida,
-     *                       Tipo da saida>
-     */
     public static class MapForAverage extends Mapper<LongWritable, Text, Text, FireAvgTempWritable> {
 
         // Funcao de map
         public void map(LongWritable key, Text value, Context con)
                 throws IOException, InterruptedException {
-            // Carregamento do bloco e conversao dele para string
-            String line = value.toString();
-
-            // fazendo o split para obter as palavras de forma isolada
-            String[] values = line.split(",");
-
-            // temperatura (indice 8)
-            float sum = Float.parseFloat(values[8]);
-
-            // emitir <"media", (n=1, soma=valor)>
-            FireAvgTempWritable val = new FireAvgTempWritable(1, sum);
-
-            // emissao
-            con.write(new Text("temp"), val);
 
         }
     }
 
-
-    /**
-     * Classe de Reduce
-     * Formato geral: Reducer<Tipo da chave de Entrada,
-     *                        Tipo do Valor de Entrada,
-     *                        Tipo da chave de Saida,
-     *                        Tipo do Valor de Saida>
-     *
-     *
-     * Importante: note que o tipo do valor de entrada n eh uma lista!
-     */
     public static class ReduceForAverage extends Reducer<Text, FireAvgTempWritable, Text, FloatWritable> {
-
-        // Funcao de reduce
         public void reduce(Text key, Iterable<FireAvgTempWritable> values, Context con)
                 throws IOException, InterruptedException {
-
-            float sumVals = 0;
-            int sumN = 0;
-            for (FireAvgTempWritable val : values) {
-                sumN += val.getN();
-                sumVals += val.getTemp();
-            }
-            // faz a saida no formato <palavra, somatorio de ocorrencias>
-            con.write(key, new FloatWritable(sumVals/sumN));
 
         }
     }
