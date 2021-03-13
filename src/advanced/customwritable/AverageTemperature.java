@@ -30,20 +30,7 @@ public class AverageTemperature {
         Path output = new Path(files[1]);
 
         // criacao do job e seu nome
-        Job j = new Job(c, "media-professor");
-
-        // registro das classes
-        j.setJarByClass(AverageTemperature.class);
-        j.setMapperClass(MapForAverage.class);
-        j.setReducerClass(ReduceForAverage.class);
-
-        // definicao dos tipos de saida
-        j.setOutputKeyClass(Text.class);
-        j.setOutputValueClass(FireAvgTempWritable.class);
-
-        // cadastro dos arquivos de entrada e saida
-        FileInputFormat.addInputPath(j, input);
-        FileOutputFormat.setOutputPath(j, output);
+        Job j = new Job(c, "media");
 
         // lanca o job e aguarda sua execucao
         System.exit(j.waitForCompletion(true) ? 0 : 1);
