@@ -2,10 +2,7 @@ package advanced.customwritable;
 
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.Path;
-import org.apache.hadoop.io.FloatWritable;
-import org.apache.hadoop.io.IntWritable;
-import org.apache.hadoop.io.LongWritable;
-import org.apache.hadoop.io.Text;
+import org.apache.hadoop.io.*;
 import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.Mapper;
 import org.apache.hadoop.mapreduce.Reducer;
@@ -18,7 +15,9 @@ import java.io.IOException;
 
 public class AverageTemperature {
 
-    public static void main(String args[]) throws IOException, ClassNotFoundException, InterruptedException {
+    public static void main(String args[]) throws IOException,
+            ClassNotFoundException,
+            InterruptedException {
         BasicConfigurator.configure();
 
         Configuration c = new Configuration();
@@ -32,19 +31,22 @@ public class AverageTemperature {
         // criacao do job e seu nome
         Job j = new Job(c, "media");
 
-        // lanca o job e aguarda sua execucao
-        System.exit(j.waitForCompletion(true) ? 0 : 1);
     }
 
 
     public static class MapForAverage extends Mapper<LongWritable, Text, Text, FireAvgTempWritable> {
-
-        // Funcao de map
         public void map(LongWritable key, Text value, Context con)
                 throws IOException, InterruptedException {
 
         }
     }
+
+    public static class CombineForAverage extends Reducer<Text, FireAvgTempWritable, Text, FireAvgTempWritable>{
+        public void reduce(Text key, Iterable<FireAvgTempWritable> values, Context con)
+                throws IOException, InterruptedException {
+        }
+    }
+
 
     public static class ReduceForAverage extends Reducer<Text, FireAvgTempWritable, Text, FloatWritable> {
         public void reduce(Text key, Iterable<FireAvgTempWritable> values, Context con)

@@ -21,31 +21,24 @@ public class ForestFire {
         String[] files = new GenericOptionsParser(c, args).getRemainingArgs();
 
         // arquivo de entrada
-        Path inputA = new Path(files[0]);
-        Path inputB = new Path(files[1]);
+        Path input = new Path(files[0]);
 
         // arquivo de saida
-        Path output = new Path(files[2]);
+        Path output = new Path(files[1]);
 
-        // criacao do job e seu nome
-        Job j = new Job(c, "forestfire");
-
-        System.exit(j.waitForCompletion(true) ? 0 : 1);
     }
 
-    public class ForestFireMapper extends Mapper<Object, Text, Text, ForestFireWritable> {
+    public static class ForestFireMapper extends Mapper<Object, Text, Text, ForestFireWritable> {
         public void map(Object key, Text value, Context context) throws IOException,
                 InterruptedException {
 
         }
     }
 
-    public class ForestFireReducer extends Reducer<Text, ForestFireWritable, Text, ForestFireWritable> {
-
+    public static class ForestFireReducer extends Reducer<Text, ForestFireWritable, Text, ForestFireWritable> {
         public void reduce(Text key,
                            Iterable<ForestFireWritable> values,
                            Context context) throws IOException, InterruptedException {
         }
     }
-
 }
